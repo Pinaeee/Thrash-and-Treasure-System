@@ -1,0 +1,52 @@
+{% extends "app/layout.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'app/css/styles.css' %}">
+
+<div style="margin-top: 50px;">
+<h2>Your Cart</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Select</th>
+                <th>Image</th>
+                <th>Item Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cart_item in cart_items %}
+            <tr>
+                <td>
+                    <input type="checkbox" name="selected_items" value="{{ cart_item.cart_id }}">
+                </td>
+                <td><img src="{{ cart_item.product_id.image_url }}" alt="{{ cart_item.product_id.item_name }}" style="width: 100px;"></td>
+                <td>{{ cart_item.product_id.item_name }}</td>
+                <td>
+                    <input type="number" name="quantity_{{ cart_item.cart_id }}" value="{{ cart_item.quantity_purchase }}" min="1" class="form-control">
+                </td>
+                <td>${{ cart_item.product_id.product_price }}</td>
+                <td>${{ cart_item.total_price }}</td>
+                <td>
+                    <button type="submit" name="update_quantity_{{ cart_item.cart_id }}" class="btn btn-outline-secondary ml-2">Update</button>
+                    <button type="submit" name="delete_item_{{ cart_item.cart_id }}" class="btn btn-danger">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="text-right">
+        <button type="submit" formaction="{% url 'checkout' %}" class="btn btn-success">Proceed to Checkout</button>
+    </div>
+</form>
+</div>
+{% endblock %}
+
+

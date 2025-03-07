@@ -1,0 +1,41 @@
+{% extends "app/layout.html" %} {% block content %}
+<div class="container_sellerdashbroad" style="margin-top: 70px">
+  <h1>Seller Dashboard</h1>
+</div>
+
+<style>
+  body {
+    display: grid;
+    /* Use grid layout */
+    place-items: center;
+    /* Center both horizontally and vertically */
+    margin-top: 2%;
+  }
+
+  .btn {
+    margin: 20px;
+    /* Gap between buttons */
+    padding: 50px 80px;
+    /* Padding for the button */
+    background-color: lightgray;
+    /* Dark background */
+    color: #343a40;
+    /* Text color */
+    border: none;
+    /* No border */
+    text-decoration: none;
+    /* Remove underline */
+    transition: background-color 0.3s;
+    /* Smooth transition */
+  }
+
+  .btn:hover {
+    background-color: darkgray;
+    /* Darker shade on hover */
+  }
+</style>
+
+<a href="{% url 'viewprofile' %}" class="btn">Profile</a>
+<a href="{% url 'product' %}" class="btn">Product</a>
+<a href="{% url 'orders' %}" class="btn">Orders</a>
+{% endblock %}

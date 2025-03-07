@@ -1,0 +1,58 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        label, input, textarea {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid black;
+            background-color: lightgray;
+        }
+        .button {
+            padding: 10px 20px;
+            border: 2px solid black;
+            background-color: lightgray;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: gray;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Edit Profile</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="name" placeholder="Name" required>
+        <textarea name="address" placeholder="Address:" rows="3"></textarea>
+        <input type="text" name="phone" placeholder="Phone:" required>
+        <button type="submit" class="button">Save Changes</button>
+    </form>
+</body>
+</html>
+
+{% endblock %}

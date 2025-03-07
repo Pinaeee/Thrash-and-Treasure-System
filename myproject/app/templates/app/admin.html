@@ -1,0 +1,42 @@
+{% extends "app/layout.html" %} {% block content %}
+
+<div class="container" style="margin-top: 70px">
+  <h1>Admin Dashboard</h1>
+</div>
+<style>
+  body {
+    display: grid;
+    /* Use grid layout */
+    place-items: center;
+    /* Center both horizontally and vertically */
+    margin-top: 2%;
+  }
+
+  .btn {
+    margin: 20px;
+    /* Gap between buttons */
+    padding: 50px 80px;
+    /* Padding for the button */
+    background-color: lightgray;
+    /* Dark background */
+    color: #343a40;
+    /* Text color */
+    border: none;
+    /* No border */
+    text-decoration: none;
+    /* Remove underline */
+    transition: background-color 0.3s;
+    /* Smooth transition */
+  }
+
+  .btn:hover {
+    background-color: darkgray;
+    /* Darker shade on hover */
+  }
+</style>
+
+<a href="{% url 'manage_users' %}" class="btn">Manage Users</a>
+<a href="{% url 'manage_contents' %}" class="btn">Manage Contents</a>
+<a href="{% url 'monitor_transactions' %}" class="btn">Monitor Transactions</a>
+
+{% endblock %}

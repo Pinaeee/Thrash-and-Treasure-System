@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title }}</title>
+    {% load static %}
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'app/content/bootstrap.min.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'app/content/site.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'app/content/bootstrap.min.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'app/content/cart.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'app/content/admin.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'app/content/login.css' %}"
+    />
+
+    <script src="{% static 'app/scripts/modernizr-2.6.2.js' %}"></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button
+            type="button"
+            class="navbar-toggle"
+            data-toggle="collapse"
+            data-target=".navbar-collapse"
+          >
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="/" class="navbar-brand">Thrash and Treasure</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            {% if user.is_authenticated %} {% if is_customer %}
+            <li>
+              <a href="{% url 'cart' %}">
+                <img
+                  src="{% static 'assets/cart.png' %}"
+                  alt="Cart"
+                  style="width: 30px; height: 30px"
+                />
+              </a>
+            </li>
+            {% elif is_seller %}
+            <li><a href="{% url 'dashboard' %}">Seller Dashboard</a></li>
+            {% elif is_admin %}
+            <li class="dropdown">
+              <a
+                href="#"
+                class="dropdown-toggle"
+                data-toggle="dropdown"
+                role="button"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Administrator <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="{% url 'admin_dashboard' %}">Admin Dashboard</a>
+                </li>
+                <li><a href="{% url 'delivery_dashboard' %}">Delivery Dashboard</a></li>
+                <li><a href="{% url 'dashboard' %}">Seller Dashboard</a></li>
+              </ul>
+            </li>
+            {% elif is_delivery_coordinator %}
+              <li><a href="{% url 'delivery_dashboard' %}">Delivery Dashboard</a></li>
+            {% endif %} {% endif %}
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            {% include 'app/loginpartial.html' %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container body-content">
+      {% block content %}{% endblock %}
+      <hr />
+
+    </div>
+
+    <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+    <script src="{% static 'app/scripts/bootstrap.js' %}"></script>
+    <script src="{% static 'app/scripts/respond.js' %}"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

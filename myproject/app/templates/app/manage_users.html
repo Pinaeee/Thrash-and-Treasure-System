@@ -1,0 +1,83 @@
+{% extends "app/layout.html" %}
+{% block content %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; }
+        h1, h2 { color: #333; }
+        table { width: 100%; border-collapse: collapse; background-color: white; }
+        th, td { padding: 12px; border-bottom: 1px solid #ddd; }
+        th { background-color: #2c3e50; color: white; }
+        .actions button { padding: 5px 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1><br><br>Manage Users</h1>
+    <a href="{% url 'admin_dashboard' %}" class="home-icon">
+        <img src="{% static 'assets/home.png' %}" alt="Home" width="24" height="24" style="float: right;">        
+    </a>
+
+    <p>Number of Customers: {{ customers|length }}</p>
+
+    <div class="text-center" style="float: right;" >
+        <a href="{% url 'add_customer' %}" class="btn btn-primary">Add Customer</a>
+        <a href="{% url 'add_seller' %}" class="btn btn-primary">Add Seller</a>
+    </div>
+
+    <p>Number of Sellers: {{ sellers|length }}</p>
+<p><br></p>
+    <table>
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Type</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in customers %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ customer.customer_name }}</td>
+                <td>{{ customer.customer_email }}</td>
+                <td>Customer</td>
+                <td>
+                    <form method="post" action="{% url 'manage_users' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="id" value="{{ customer.customer_id }}">
+                        <input type="hidden" name="type" value="customer">
+                        <button type="submit" class="btn btn-primary mt-3 w-100">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+            {% for seller in sellers %}
+            <tr>
+                <td>{{ forloop.counter|add:customers.count }}</td>
+                <td>{{ seller.name }}</td>
+                <td>{{ seller.email }}</td>
+                <td>Seller</td>
+                <td>
+                    <form method="post" action="{% url 'manage_users' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="id" value="{{ seller.seller_id }}">
+                        <input type="hidden" name="type" value="seller">
+                        <button type="submit" class="btn btn-primary mt-3 w-100">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>
+{% endblock %}

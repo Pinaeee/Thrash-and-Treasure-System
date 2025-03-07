@@ -1,0 +1,264 @@
+{% extends "app/layout.html" %}
+{% load static %}
+
+{% block content %}
+<div class="order-container">
+    <div class="order-header">
+        <h1 class="order-title">
+            Order Detail
+            <a href="{% url 'dashboard' %}" class="home-icon">
+                <img src="{% static 'assets/home.png' %}" alt="Home">
+            </a>
+        </h1>
+    </div>
+
+    {% for order in orders %}
+    <div class="order-card">
+        <div class="order-meta">
+            <div class="order-ids">
+                <div class="order-id">
+                    <span class="meta-label">ORDER ID</span>
+                    <span class="meta-value">{{ order.order_id }}</span>
+                </div>
+                {% if order.payments.exists %}
+                <div class="payment-id">
+                    <span class="meta-label">PAYMENT ID</span>
+                    <span class="meta-value">{{ order.payments.first.payment_id }}</span>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="order-status-container">
+                <span class="status-label">STATUS</span>
+                <span class="status-badge 
+                    {% if order.order_status == 'Accepted' %}status-accepted
+                    {% elif order.order_status == 'Rejected' %}status-rejected
+                    {% else %}status-pending{% endif %}">
+                    {{ order.order_status }}
+                </span>
+            </div>
+        </div>
+
+        <div class="order-details">
+            <div class="customer-info">
+                <h2 class="customer-name">{{ order.customer_id.customer_name }}</h2>
+                <div class="customer-meta">
+                    <span class="meta-label">CUSTOMER ID</span>
+                    <span class="meta-value">{{ order.customer_id.customer_id }}</span>
+                </div>
+            </div>
+
+            <div class="shipping-info">
+                <h3 class="info-title">Shipping Address</h3>
+                <p class="address-text">{{ order.customer_id.customer_address }}</p>
+            </div>
+        </div>
+
+        <div class="order-actions">
+            <button class="action-btn accept-btn" 
+                    data-order-id="{{ order.order_id }}"
+                    onclick="updateOrderStatus('{{ order.order_id }}', 'Accepted')">
+                Approve Order
+            </button>
+            <button class="action-btn reject-btn" 
+                    data-order-id="{{ order.order_id }}"
+                    onclick="updateOrderStatus('{{ order.order_id }}', 'Rejected')">
+                Reject Order
+            </button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+    :root {
+        --primary-color: #2c3e50;
+        --success-color: #27ae60;
+        --danger-color: #e74c3c;
+        --pending-color: #f1c40f;
+        --text-color: #34495e;
+    }
+
+    .order-container {
+        max-width: 1200px;
+        margin: 5rem auto;
+        padding: 0 1rem;
+    }
+
+    .order-title {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center align */
+    gap: 1rem;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    }
+
+    .home-icon img {
+        width: 24px;
+        height: 24px;
+        vertical-align: middle;
+    }
+
+
+    .order-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 1.5rem;
+        padding: 1.5rem;
+        transition: transform 0.3s ease;
+    }
+
+    .order-card:hover {
+        transform: translateY(-2px);
+    }
+
+    .order-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #ecf0f1;
+    }
+
+    .meta-label {
+        display: block;
+        font-size: 0.9rem;
+        color: #7f8c8d;
+        margin-bottom: 0.3rem;
+    }
+
+    .meta-value {
+        font-weight: 600;
+        color: var(--text-color);
+    }
+
+    .status-badge {
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .status-pending {
+        background-color: #fef5e7;
+        color: var(--pending-color);
+    }
+
+    .status-accepted {
+        background-color: #e8f6f3;
+        color: var(--success-color);
+    }
+
+    .status-rejected {
+        background-color: #fdedec;
+        color: var(--danger-color);
+    }
+
+    .customer-name {
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .shipping-info {
+        margin-top: 1.5rem;
+    }
+
+    .info-title {
+        color: #7f8c8d;
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .address-text {
+        color: var(--text-color);
+        line-height: 1.6;
+    }
+
+    .order-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #ecf0f1;
+    }
+
+    .action-btn {
+        padding: 0.8rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .accept-btn {
+        background-color: var(--success-color);
+        color: white;
+    }
+
+    .accept-btn:hover {
+        background-color: #219a52;
+    }
+
+    .reject-btn {
+        background-color: var(--danger-color);
+        color: white;
+    }
+
+    .reject-btn:hover {
+        background-color: #c0392b;
+    }
+</style>
+
+<script>
+    async function updateOrderStatus(orderId, status) {
+    try {
+        const response = await fetch(`/update_order_status/${orderId}/${status}/`, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": getCSRFToken(), // Include CSRF token
+                "Content-Type": "application/json"
+            },
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            // Update UI without reload
+            const statusBadge = document.querySelector(`[data-order-id="${orderId}"]`)
+                .closest('.order-card')
+                .querySelector('.status-badge');
+
+            statusBadge.textContent = status;
+            statusBadge.className = `status-badge status-${status.toLowerCase()}`;
+
+            // Visual feedback
+            statusBadge.parentElement.animate([
+                { transform: 'scale(1)' },
+                { transform: 'scale(1.1)' },
+                { transform: 'scale(1)' }
+            ], 300);
+        } else {
+            alert('Error updating status: ' + (data.error || 'Unknown error'));
+        }
+    } catch (error) {
+        alert('Network error: Please check your connection');
+    }
+}
+
+// Function to retrieve CSRF token from cookie
+function getCSRFToken() {
+    return document.cookie.split('; ')
+        .find(row => row.startsWith('csrftoken='))
+        ?.split('=')[1];
+}
+
+</script>
+{% endblock %}
+
+
+

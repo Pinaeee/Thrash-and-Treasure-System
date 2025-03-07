@@ -1,0 +1,60 @@
+{% extends 'app/layout.html' %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Dashboard</title>
+
+    <style>
+        body {
+        display: grid;
+        place-items: center;
+        margin-top: 2%;
+        }
+
+        .btn {
+            margin: 20px;
+            /* Gap between buttons */
+            padding: 50px 80px;
+            /* Padding for the button */
+            background-color: lightgray;
+            /* Dark background */
+            color: #343a40;
+            /* Text color */
+            border: none;
+            /* No border */
+            text-decoration: none;
+            /* Remove underline */
+            transition: background-color 0.3s;
+            /* Smooth transition */
+        }
+
+        .btn-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2x2 grid */
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .btn:hover {
+            background-color: darkgray
+                /* Shade on hover */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Delivery Dashboard</h1>
+
+    <a href="{% url 'delivery:del_couriers' %}" class="btn btn-outline-dark btn-lg">Assign Couriers</a>
+    <a href="{% url 'delivery:track_deliveries' %}" class="btn btn-outline-dark btn-lg">Track Deliveries</a>
+    <a href="{% url 'delivery:del_issues' %}" class="btn btn-outline-dark btn-lg">Handle Issues</a>
+    <a href="{% url 'delivery:del_report' %}" class="btn btn-outline-dark btn-lg">Generate Report</a>
+
+</body>
+</html>
+{% endblock %}

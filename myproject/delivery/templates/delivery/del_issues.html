@@ -1,0 +1,74 @@
+{% extends 'app/layout.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handle Issues</title>
+
+    <style>
+        body {
+        place-items: center;
+        margin-top: 2%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Handle Issues
+         <!-- Home Button -->
+         <a href="{% url 'delivery_dashboard' %}" class="home-icon">
+            <img src="{% static 'assets/home.png' %}" alt="Home" width="24" height="24" style="float: right;">        
+        </a>
+    </h1>
+    <div class="container mt-5">
+    
+        <div class="row">
+            <!-- Pending Issues -->
+            <div class="col-md-6 border-right">
+                <h3>Pending Issues</h3>
+                <ul class="list-group">
+                    {% for issue in pending_issues %}
+                    <li class="list-group-item">
+                        <strong>Issue ID:</strong> {{ issue.issue_id }}<br>
+                        <strong>Order ID:</strong> {{ issue.order.order_id }}<br>
+                        <strong>Description:</strong> {{ issue.issue_description }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+    
+            <!-- Resolution Form -->
+            <div class="col-md-6">
+                <h3>Resolution</h3>
+                <form method="POST" action="{% url 'delivery:del_issues' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="issue_id">Select Issue</label>
+                        <select class="form-control" id="issue_id" name="issue_id" required>
+                            {% for issue in pending_issues %}
+                            <option value="{{ issue.issue_id }}">#{{ issue.issue_id }} - {{ issue.order.order_id }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="resolution_description">Resolution</label>
+                        <textarea class="form-control" id="resolution_description" name="resolution_description" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="resolution_status">Status</label>
+                        <select class="form-control" id="resolution_status" name="resolution_status" required>
+                            <option value="Resolved">Resolved</option>
+                            <option value="Escalated">Escalated</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

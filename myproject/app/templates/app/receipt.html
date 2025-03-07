@@ -1,0 +1,29 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+<div class="container" style="margin-top: 50px;">
+    <h2>Order Receipt</h2>
+    <p>Order ID: {{ receipt.order_id }}</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Image</th>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in receipt.items %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td><img src="{{ item.image }}" alt="{{ item.name }}" style="width: 100px;"></td>
+                <td>{{ item.quantity }}</td>
+                <td>${{ item.price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h3>Total Amount: ${{ receipt.total_amount }}</h3>
+</div>
+{% endblock %}

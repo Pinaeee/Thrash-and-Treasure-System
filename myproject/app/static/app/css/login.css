@@ -1,0 +1,28 @@
+.login-container {
+    margin-top: 50px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.login-container h2 {
+    margin-bottom: 20px;
+}
+
+.login-container .form-group {
+    margin-bottom: 15px;
+}
+
+.login-container .form-control {
+    border-radius: 4px;
+}
+
+.login-container .btn {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+}

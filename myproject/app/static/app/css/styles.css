@@ -1,0 +1,153 @@
+/* Modern color scheme */
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #3498db;
+  --accent-color: #e74c3c;
+  --background-color: #f8f9fa;
+  --text-color: #2c3e50;
+}
+
+/* Enhanced menu container */
+.menu-container {
+  background-color: var(--background-color);
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%; /* Limit the width of the container */
+  margin: 0 auto; /* Center the container horizontally */
+  text-align: center;
+}
+
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+  border-radius: 15px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
+.card-img-top {
+  transition: transform 0.3s ease;
+  height: 200px;
+  object-fit: cover;
+}
+
+.card:hover .card-img-top {
+  transform: scale(1.05);
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.card-title {
+  color: var(--primary-color);
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.card-text {
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+.btn-outline-primary {
+  border-width: 2px;
+  border-radius: 25px;
+  padding: 8px 20px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border-color: #007bff;
+  color: #007bff;
+}
+
+.btn-outline-primary:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* Existing styles */
+
+.banner {
+  position: relative;
+  width: 80%; /* Adjust as needed */
+  height: 300px; /* Adjust as needed */
+  margin: 50px auto; /* Center the banner horizontally and add margin on top */
+  overflow: hidden;
+  display: flex; /* Use flexbox to center content */
+  justify-content: center; /* Horizontally center content */
+  align-items: center; /* Vertically center content */
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.banner img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 1s ease-in-out; /* Optional: for a fade effect */
+  border-radius: 15px;
+}
+
+.row {
+  justify-content: center;
+  width: 100%;
+  margin: 0 auto;
+  gap: 2rem;
+  padding: 2rem 0;
+}
+
+.col-md-4 {
+  display: flex;
+  justify-content: center;
+}
+
+h2 {
+  position: relative;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 3rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-align: center;
+  width: 100%;
+}
+
+h2:after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: var(--secondary-color);
+  border-radius: 2px;
+}
+
+/* Style the items for sale section */
+.items-for-sale {
+  width: 100%; /* Adjust as needed */
+  margin-top: 50px;
+}
+
+/* Price tag styling */
+.text-muted {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--accent-color) !important;
+}

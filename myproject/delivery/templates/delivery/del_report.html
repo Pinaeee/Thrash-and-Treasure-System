@@ -1,0 +1,90 @@
+{% extends 'app/layout.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Report</title>
+
+    <style>
+        body {
+            margin-top: 2%;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .btn-save {
+            margin-top: 10px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Display Message If No Reports Exist -->
+    {% if message %}
+        <div class="alert alert-warning text-center">
+            {{ message }}
+        </div>
+    {% endif %}
+    
+    <div class="container">
+        <h1>Generate Report
+            <!-- Home Button -->
+            <a href="{% url 'delivery_dashboard' %}" class="home-icon">
+                <img src="{% static 'assets/home.png' %}" alt="Home" width="24" height="24" style="float: right;">        
+            </a>
+        </h1>
+
+        <div class="row">
+            <!-- Report Type Selection -->
+            <div class="col-md-4">
+                <h4>Select Report Type:</h4>
+                <form method="POST" action="{% url 'delivery:del_report' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <select class="form-control" name="report_type">
+                            <option value="Daily">Daily</option>
+                            <option value="Weekly">Weekly</option>
+                            <option value="Monthly">Monthly</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3 w-100">Generate Report</button>
+                </form>
+            </div>
+
+            <!-- Report Summary -->
+            <div class="col-md-8">
+                <h4>Report Summary</h4>
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>Report Type:</strong> {{ report_type }}</li>
+                    <li class="list-group-item"><strong>Time Range:</strong> {{ start_date }} to {{ end_date }}</li>
+                    <li class="list-group-item"><strong>Total Deliveries:</strong> {{ total_deliveries }} dispatched.</li>
+                    <li class="list-group-item"><strong>Successful Deliveries:</strong> {{ successful_deliveries }} delivered on time.</li>
+                    <li class="list-group-item"><strong>Pending Deliveries:</strong> {{ pending_deliveries }} still in transit.</li>
+                    <li class="list-group-item"><strong>Delivery Issues:</strong> {{ issues_reported }} reported.</li>
+                </ul>
+
+                <!-- Save Report Button -->
+                <form method="POST" action="{% url 'delivery:save_report' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="report_type" value="{{ report_type }}">
+                    <input type="hidden" name="start_date" value="{{ start_date }}">
+                    <input type="hidden" name="end_date" value="{{ end_date }}">
+                    <input type="hidden" name="total_deliveries" value="{{ total_deliveries }}">
+                    <input type="hidden" name="successful_deliveries" value="{{ successful_deliveries }}">
+                    <input type="hidden" name="pending_deliveries" value="{{ pending_deliveries }}">
+                    <input type="hidden" name="issues_reported" value="{{ issues_reported }}">
+                    <button type="submit" class="btn btn-success btn-save">Save Report</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

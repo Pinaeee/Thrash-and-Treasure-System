@@ -1,0 +1,151 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+{% load static %}
+
+<div class="header">
+    <div class="header-content">
+        <h1>Product List</h1>
+        <a href="{% url 'dashboard' %}" class="home-icon">
+            <img src="{% static 'assets/home.png' %}" alt="Home">
+        </a>
+    </div>
+</div>
+
+<div class="title-container">
+   <!-- Fix the template tag spacing -->
+    <a href="{% url 'test' %}" class="button">CREATE PRODUCT</a>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Image</th>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.item_name }}</td>
+            <td><img src="{{ item.image_url }}" alt="{{ item.item_name }}" style="width: 50px;"></td>
+            <td>{{ item.item_description }}</td>
+            <td>{{ item.product_quantity }}</td>
+            <td>{{ item.product_price }}</td>
+            <td class="action-buttons">
+                <a href="{% url 'love' item.item_id %}">Edit</a>
+                <form action="{% url 'remove' item.item_id %}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                    {% csrf_token %}
+                    <button type="submit" class="delete">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">No products available.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f4f4f4;
+    }
+    .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+    }
+    .header-content {
+        display: flex;
+        justify-content: space-between; /* Space between title and icon */
+        align-items: center; /* Center vertically */
+    }
+    h1 {
+        padding: 30px 0px;
+        margin-bottom: 20px;
+        margin: 0; /* Remove default margin */
+    }
+    .home-icon {
+        font-size: 24px;
+        text-decoration: none;
+        color: black;
+    }
+    .home-icon img {
+        width: 24px;
+        height: 24px;
+        vertical-align: middle;
+        margin-left: 10px;
+    }
+    .title-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 10px;
+        text-decoration: none; /* Remove underline */
+    }
+    .button {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        color: black;
+        background-color: lightgray;
+        font-size: 14px;
+        text-decoration: none; /* Remove underline */
+        display: inline-block;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+    table, th, td {
+        border: 1px solid #ddd;
+    }
+    th, td {
+        padding: 10px;
+        text-align: left;
+    }
+    th {
+        background-color: #333;
+        color: white;
+    }
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+    }
+    .action-buttons a {
+        padding: 5px 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: #4CAF50;
+        color: white;
+        text-decoration: none; /* Remove underline */
+    }
+    .action-buttons button.delete {
+        background-color: #f44336;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+</style>
+
+{% endblock %}

@@ -1,0 +1,120 @@
+{% extends 'app/layout.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assign Couriers</title>
+
+    <style>
+        body {
+            place-items: center;
+            margin-top: 2%;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #f8f9fa; /* Light gray background */
+            color: #343a40; /* Dark gray text */
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .home-button:hover {
+            background-color: #e2e6ea; /* Slightly darker gray */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Error/Success Message -->
+    {% if messages %}
+    <div class="alert-container">
+        {% for message in messages %}
+            <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <h1>Assign Couriers  
+        <!-- Home Button -->
+        <a href="{% url 'delivery_dashboard' %}" class="home-icon">
+            <img src="{% static 'assets/home.png' %}" alt="Home" width="24" height="24" style="float: right;">        
+        </a>
+    </h1>
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Unassigned Deliveries -->
+            <div class="col-md-4">
+                <h4>Unassigned Deliveries</h4>
+                <ul class="list-group">
+                    {% for order in unassigned_deliveries %}
+                    <li class="list-group-item">
+                        <strong>#{{ order.order.order_id }}</strong><br>
+                        <strong>Customer Name:</strong> {{ order.order.customer_id.customer_name }}<br>
+                        <strong>Phone:</strong> {{ order.order.customer_id.customer_phone }}<br>
+                        <strong>Address:</strong> {{ order.order.customer_id.customer_address }}<br>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Available Couriers -->
+            <div class="col-md-4">
+                <h4>Available Couriers</h4>
+                <ul class="list-group">
+                    {% for courier in available_couriers %}
+                    <li class="list-group-item">
+                        <strong>{{ courier.courier_company }}</strong> - {{ courier.dp_name }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Summary -->
+            <div class="col-md-4">
+                <h4>Summary</h4>
+                <form method="POST" action="{% url 'delivery:del_couriers' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="order_id">Select Delivery</label>
+                        <select class="form-control" id="order_id" name="order_id">
+                            {% for order in unassigned_deliveries %}
+                            <option value="{{ order.order.order_id }}">#{{ order.order.order_id }} - {{ order.order.customer_id.customer_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="courier_id">Select Courier</label>
+                        <select class="form-control" id="courier_id" name="courier_id">
+                            {% for courier in available_couriers %}
+                            <option value="{{ courier.courier_id }}">{{ courier.dp_name }} ({{ courier.courier_company }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                
+                    <button type="submit" class="btn btn-primary mt-3 w-100">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

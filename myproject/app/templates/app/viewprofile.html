@@ -1,0 +1,99 @@
+
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+         .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .profile-detail {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid black;
+            background-color: lightgray;
+            box-sizing: border-box;
+            margin: 10px auto; /* Center the profile detail boxes */
+        }
+        .home-icon img {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+        }
+        .button-container {
+            margin-top: 10px;
+            width: 300px;
+            display: flex;
+            justify-content: center;
+            margin: 0 auto; /* Center the button container */
+        }
+        .button {
+            padding: 10px 20px;
+            background-color: lightgray;
+            font-size: 16px;
+            text-decoration: none;
+            color: black;
+            border: 2px solid black;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: gray;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>View Profile</h1>
+        <a href="{% url 'dashboard' %}" class="home-icon">
+            <img src="{% static 'assets/home.png' %}" alt="Home">
+        </a>
+    </div>
+
+    <div class="profile-detail">
+        <p>{{ seller.name }}</p>
+    </div>
+    <div class="profile-detail">
+        <p>{{ seller.email }}</p>
+    </div>
+    <div class="profile-detail">
+        <p> {{ seller.address }} </p>
+    </div>
+    <div class="profile-detail">
+        <p>{{ seller.phone}} </p>
+    </div>
+    <div class="profile-detail">
+        <p>{{ seller.seller_id }}</p>
+    </div>
+
+    <div class="button-container" >
+        <a href="{% url 'editprofile' %}" class="button">Edit Profile</a>
+    </div>
+</body>
+</html>
+
+{% endblock %}
+

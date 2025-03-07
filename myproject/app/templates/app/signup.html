@@ -1,0 +1,17 @@
+{% extends "app/layout.html" %} {% load static %} {% block content %}
+
+<div style="margin-top: 70px; text-align: center">
+  <h2>Sign Up</h2>
+</div>
+
+<div class="signup-container">
+  <div class="text-center">
+    <a href="{% url 'signup_customer' %}" class="btn btn-primary"
+      >Sign Up as Customer</a
+    >
+    <a href="{% url 'signup_seller' %}" class="btn btn-secondary"
+      >Sign Up as Seller</a
+    >
+  </div>
+</div>
+{% endblock %}

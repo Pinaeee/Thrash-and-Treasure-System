@@ -1,0 +1,45 @@
+{% extends "app/layout.html" %} {% load static %} {% block content %}
+
+<div style="margin-top: 70px">
+  <h2>Sign Up as Customer</h2>
+</div>
+
+<div style="margin-top: 50px">
+  <div class="signup-container">
+    <form method="post">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          name="name"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="phone"
+          name="phone"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="address">Address:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="address"
+          name="address"
+          required
+        />
+      </div>
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+    </form>
+  </div>
+  {% endblock %}
+</div>
